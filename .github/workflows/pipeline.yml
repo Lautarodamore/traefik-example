@@ -20,8 +20,8 @@ jobs:
         run: |
           cd backend
           docker login -u $GITHUB_REGISTRY_USER -p $GITHUB_REGISTRY_PASSWORD $GITHUB_REGISTRY
-          docker build --tag $GITHUB_REGISTRY/traefik-example/backend:latest --build-arg COMMIT_SHA=${GITHUB_SHA} .
-          docker push $GITHUB_REGISTRY/traefik-example/backend:latest
+          docker build --tag $GITHUB_REGISTRY/$GITHUB_REPOSITORY/backend:latest --build-arg COMMIT_SHA=${GITHUB_SHA} .
+          docker push $GITHUB_REGISTRY/$GITHUB_REPOSITORY/backend:latest
   frontend-deploy:
     runs-on: ubuntu-latest
     steps:
@@ -31,5 +31,5 @@ jobs:
         run: |
           cd frontend
           docker login -u $GITHUB_REGISTRY_USER -p $GITHUB_REGISTRY_PASSWORD $GITHUB_REGISTRY
-          docker build --tag $GITHUB_REGISTRY/traefik-example/frontend:latest .
-          docker push $GITHUB_REGISTRY/traefik-example/frontend:latest
+          docker build --tag $GITHUB_REGISTRY/$GITHUB_REPOSITORY/frontend:latest .
+          docker push $GITHUB_REGISTRY/$GITHUB_REPOSITORY/frontend:latest
