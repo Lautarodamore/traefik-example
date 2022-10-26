@@ -21,7 +21,7 @@ services:
       - traefik-net
 
   frontend:
-    image: ghcr.io/traefik-example/frontend:latest
+    image: ghcr.io/ldamoredev/traefik-example/frontend:latest
     labels:
       - traefik.http.routers.back.rule=Host(`frontend.ldamore.com`)
       - traefik.port=3000
@@ -29,7 +29,7 @@ services:
       - traefik-net
 
   backend:
-    image: ghcr.io/traefik-example/backend:latest
+    image: ghcr.io/ldamoredev/traefik-example/backend:latest
     labels:
       - traefik.http.routers.back.rule=Host(`backend.ldamore.com`)
       - traefik.port=6060
