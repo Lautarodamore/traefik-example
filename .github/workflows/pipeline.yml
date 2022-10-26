@@ -13,7 +13,6 @@ env:
 jobs:
   backend-deploy:
     runs-on: ubuntu-latest
-    env:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -25,7 +24,6 @@ jobs:
           docker push $GITHUB_REGISTRY/$GITHUB_REPOSITORY/backend:latest
   frontend-deploy:
     runs-on: ubuntu-latest
-    env:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
