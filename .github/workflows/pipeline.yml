@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GITHUB_REGISTRY: ghcr.io
+  GITHUB_REGISTRY_USER: ${{ github.actor }}
+  GITHUB_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_SHA: ${{ github.sha }}
+
+
+jobs:
+  backend-deploy:
+    runs-on: ubuntu-latest
+    env:
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Push backend image
+        run: |
+          cd backend
+          docker login -u $GITHUB_REGISTRY_USER -p $GITHUB_REGISTRY_PASSWORD $GITHUB_REGISTRY
+          docker build --tag $GITHUB_REGISTRY/$GITHUB_REPOSITORY/backend:latest --build-arg COMMIT_SHA=${GITHUB_SHA} .
+          docker push $GITHUB_REGISTRY/$GITHUB_REPOSITORY/backend:latest
+  frontend-deploy:
+    runs-on: ubuntu-latest
+    env:
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Push frontend image
+        run: |
+          cd frontend
+          docker login -u $GITHUB_REGISTRY_USER -p $GITHUB_REGISTRY_PASSWORD $GITHUB_REGISTRY
+          docker build --tag $GITHUB_REGISTRY/$GITHUB_REPOSITORY/frontend:latest .
+          docker push $GITHUB_REGISTRY/$GITHUB_REPOSITORY/frontend:latest

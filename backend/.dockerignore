@@ -1,0 +1,8 @@
+**/.dockerignore
+**/.vs
+**/.vscode
+**/.env
+**/bin
+**/obj
+**/Dockerfile
+**/node_modules

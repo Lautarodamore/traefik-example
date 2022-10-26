@@ -1,24 +1,37 @@
 version: "3"
 
 networks:
-  web:
+  traefik-net:
     external: true
 
 services:
-  admin:
-    image: registry.gitlab.com/clementina-coop/pulsar/frontend:latest
-    labels:
-      - traefik.http.routers.back.rule=Host(`admin.ldamore.com`)
-      - traefik.port=6060
+  traefik-ingress:
+    image: traefik:v2.3.5
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - web
-    depends_on:
-      - back
+      - traefik-net
 
-  back:
-    image: registry.gitlab.com/clementina-coop/pulsar/backend:latest
+  frontend:
+    image: ghcr.io/traefik-example/frontend:latest
     labels:
-      - traefik.http.routers.back.rule=Host(`api.ldamore.com`)
+      - traefik.http.routers.back.rule=Host(`frontend.ldamore.com`)
+      - traefik.port=3000
+    networks:
+      - traefik-net
+
+  backend:
+    image: ghcr.io/traefik-example/backend:latest
+    labels:
+      - traefik.http.routers.back.rule=Host(`backend.ldamore.com`)
       - traefik.port=6060
     networks:
-      - web
+      - traefik-net
