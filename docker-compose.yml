@@ -1,0 +1,24 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+
+services:
+  admin:
+    image: registry.gitlab.com/clementina-coop/pulsar/frontend:latest
+    labels:
+      - traefik.http.routers.back.rule=Host(`admin.ldamore.com`)
+      - traefik.port=6060
+    networks:
+      - web
+    depends_on:
+      - back
+
+  back:
+    image: registry.gitlab.com/clementina-coop/pulsar/backend:latest
+    labels:
+      - traefik.http.routers.back.rule=Host(`api.ldamore.com`)
+      - traefik.port=6060
+    networks:
+      - web
