@@ -47,8 +47,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Deploy
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          docker-compose pull && docker-compose up -d '
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ secrets.HOSTNAME }}
+          username: ${{ secrets.USER_NAME }}
+          privateKey: ${{ secrets.AWS_PRIVATE_KEY }}
+          command: |
+            docker-compose pull
+            docker-compose up -d
