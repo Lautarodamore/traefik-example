@@ -50,4 +50,4 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          docker login ghcr.io -u USERNAME -p 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 && docker-compose pull && docker-compose up -d '
+          docker login -u ldamoredev -p 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 ghcr.io && docker-compose pull && docker-compose up -d '
