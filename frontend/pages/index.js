@@ -20,7 +20,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Hello from Backend
+          Hello from Frontend
         </h1>
       </main>
     </div>
