@@ -54,6 +54,6 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           privateKey: ${{ secrets.AWS_PRIVATE_KEY }}
           command: |
-            docker login -u ldamoredev -p ${ACCESS_TOKEN} ghcr.io
+            echo "${USER_NAME}" > sample.txt
             docker-compose pull
             docker-compose up -d
