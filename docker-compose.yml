@@ -8,14 +8,19 @@ services:
   traefik-ingress:
     image: traefik:v2.3.5
     command:
-      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=lautidamore@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - 80:80
+      - 443:443
       - 8080:8080
     volumes:
+      - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - traefik-net
@@ -23,15 +28,21 @@ services:
   frontend:
     image: ghcr.io/ldamoredev/traefik-example/frontend:latest
     labels:
-      - traefik.http.routers.back.rule=Host(`frontend.ldamore.com`)
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`frontend.ldamore.com`)
       - traefik.port=3000
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=myresolver
     networks:
       - traefik-net
 
   backend:
     image: ghcr.io/ldamoredev/traefik-example/backend:latest
     labels:
-      - traefik.http.routers.back.rule=Host(`backend.ldamore.com`)
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`backend.ldamore.com`)
       - traefik.port=6060
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=myresolver
     networks:
       - traefik-net
