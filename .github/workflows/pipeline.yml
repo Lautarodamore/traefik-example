@@ -43,6 +43,7 @@ jobs:
       GITHUB_REGISTRY: ghcr.io
       GITHUB_REGISTRY_USER: ${{ github.actor }}
       GITHUB_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
