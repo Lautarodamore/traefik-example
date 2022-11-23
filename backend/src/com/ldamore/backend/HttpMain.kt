@@ -1,11 +1,12 @@
 package com.ldamore.backend
 
+import com.nbottarini.asimov.environment.Env
 import io.javalin.Javalin
 import io.javalin.http.Context
 import org.slf4j.LoggerFactory
 
 fun main() {
-    val httpServer = HttpServer(6060)
+    val httpServer = HttpServer(Env["PORT"]!!.toInt())
     httpServer.start()
 }
 

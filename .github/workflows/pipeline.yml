@@ -54,6 +54,8 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           privateKey: ${{ secrets.AWS_PRIVATE_KEY }}
           command: |
+            touch .env
+            echo "PORT=6060" >> .env
             docker login -u ldamoredev -p ${{ secrets.ACCESS_TOKEN }} ghcr.io
             docker-compose pull
             docker-compose up -d
